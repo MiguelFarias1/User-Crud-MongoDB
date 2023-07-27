@@ -55,4 +55,15 @@ public class UserController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@RequestBody UserDTO userDTO, @PathVariable String id) {
+
+        var user = userService.fromDTO(userDTO);
+        user.setId(id);
+
+        userService.update(user);
+
+        return ResponseEntity.noContent().build();
+    }
 }

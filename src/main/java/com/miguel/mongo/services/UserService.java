@@ -26,7 +26,7 @@ public class UserService {
 
     public User fromDTO(UserDTO userDTO) {
 
-        return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail());
+        return new User(userDTO.getName(), userDTO.getEmail());
     }
 
     public User insert(User user) {
@@ -39,5 +39,22 @@ public class UserService {
         if(!userRepository.existsById(id)) throw new UserNotFoundException("Usuário não encontrado !");
 
         userRepository.deleteById(id);
+    }
+
+    private void updateData(User src, User dest) {
+        dest.setName(src.getName());
+        dest.setEmail(src.getEmail());
+    }
+
+    public void update(User user) {
+
+        var obj = userRepository.findById(user.getId());
+
+        if(obj.isEmpty()) throw new UserNotFoundException("Usuário não encontrado !");
+
+        updateData(user, obj.get());
+
+        userRepository.save(obj.get());
+
     }
 }
